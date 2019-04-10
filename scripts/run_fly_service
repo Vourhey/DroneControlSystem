@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+from wp_test.nodes import fly_by_local_points_node
+
+if __name__ == '__main__':
+    fly_by_local_points_node()
+
