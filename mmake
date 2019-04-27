@@ -1,0 +1,2 @@
+export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:/nix/store/2lc98n600vbpq23jyvlik2skar849cvi-mavros_msgs-0.27.0:/nix/store/962rsvhb2qfh4n1w2qdr6lwv7p3n1k8d-geometry_msgs-1.12.6:/nix/store/6wvwn8acfzriw3jwm2b9xj9nrc6jh8iy-sensor_msgs-1.12.6:/nix/store/37p3nq5hmmni5w6lvz98c14dn7jd84yr-geographic_msgs-0.5.3:/nix/store/q9g1yb4qsqf2blpjykfbm8crwi3f32yx-uuid_msgs-1.0.6
+catkin_make

@@ -1,13 +1,15 @@
 import rospy
-from wp_test.srv import FileName, FileNameResponse
+from drone_control_system.srv import FileName, FileNameResponse
 
 from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State
 from mavros_msgs.srv import CommandTOL, CommandBool, CommandBoolRequest, SetMode, SetModeRequest
 
-class FlyByLocalPointsService:
+
+class DroneManager:
     def __init__(self):
-        rospy.init_node('fly_by_local_points_node')
+        rospy.init_node('drone_manager_node')
+
         rospy.Service('fly_by_points', FileName, self.fly_service_cb)
 
         rospy.loginfo('Node is loaded')
@@ -17,18 +19,18 @@ class FlyByLocalPointsService:
         self.load_points(file_name.file_name)
         rospy.loginfo('Points are loaded...')
 
-        rospy.Subscriber('/mavros/state', State, self.state_cb)
+        rospy.Subscriber('/uav1/mavros/state', State, self.state_cb)
         rospy.loginfo("subscribed to state")
 
-        rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.check_local_position)
+        rospy.Subscriber('/uav1/mavros/local_position/pose', PoseStamped, self.check_local_position)
 
-        local_pos_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=10)
+        local_pos_pub = rospy.Publisher('/uav1/mavros/setpoint_position/local', PoseStamped, queue_size=10)
 
-        rospy.wait_for_service('/mavros/cmd/arming')
-        arming = rospy.ServiceProxy('mavros/cmd/arming', CommandBool)
+        rospy.wait_for_service('/uav1/mavros/cmd/arming')
+        arming = rospy.ServiceProxy('/uav1/mavros/cmd/arming', CommandBool)
 
-        rospy.wait_for_service('/mavros/set_mode')
-        set_mode = rospy.ServiceProxy('mavros/set_mode', SetMode)
+        rospy.wait_for_service('/uav1/mavros/set_mode')
+        set_mode = rospy.ServiceProxy('/uav1/mavros/set_mode', SetMode)
 
         rate = rospy.Rate(20.0)
 
@@ -114,4 +116,3 @@ class FlyByLocalPointsService:
 
     def spin(self):
         rospy.spin()
-

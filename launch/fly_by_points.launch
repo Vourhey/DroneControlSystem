@@ -1,4 +1,4 @@
 <launch>
-    <node pkg="wp_test" name="fly_by_local_points_node" type="run_fly_service" output="screen"/>
+    <node pkg="drone_control_system" name="drone_manager_node" type="run_fly_service" output="screen"/>
 </launch>
 
