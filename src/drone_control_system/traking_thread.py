@@ -11,7 +11,7 @@ class TrakingThread(threading.Thread):
         threading.Thread.__init__(self)
         self.result_queue = result_queue
         self.drone = drone
-        self.prefix = '/uav' + drone
+        self.prefix = '/uav' + str(drone)
         self.liability = liability
         self.filename = filename
 
@@ -20,7 +20,7 @@ class TrakingThread(threading.Thread):
         rospy.loginfo('Points are loaded...')
 
         rospy.Subscriber(self.prefix + '/mavros/state', State, self.state_cb)
-        rospy.loginfo("Drone" + self.drone + ": Subscribed to the state topic")
+        rospy.loginfo("Drone" + str(self.drone) + ": Subscribed to the state topic")
 
         rospy.Subscriber(self.prefix + '/mavros/local_position/pose', PoseStamped, self.check_local_position)
 
@@ -35,7 +35,7 @@ class TrakingThread(threading.Thread):
         rate = rospy.Rate(20.0)
 
         while (not rospy.is_shutdown()) and (not self.mavros_state.connected):
-            rospy.loginfo("Drone" + self.drone + ": Waiting for a connection")
+            rospy.loginfo("Drone" + str(self.drone) + ": Waiting for a connection")
             rospy.sleep(1)
 
         for i in range(10):
@@ -57,19 +57,20 @@ class TrakingThread(threading.Thread):
                     (rospy.Time().now() - last_request > rospy.Duration(5.0)):
                 response = set_mode(offb_set_mode)
                 if response.mode_sent:
-                    rospy.loginfo("Drone" + self.drone + ": Offboard enabled")
+                    rospy.loginfo("Drone" + str(self.drone) + ": Offboard enabled")
                 last_request = rospy.Time().now()
             else:
                 if not self.mavros_state.armed and \
                         (rospy.Time().now() - last_request > rospy.Duration(5.0)):
                     response = arming(arm_cmd)
                     if response.success:
-                        rospy.loginfo("Drone" + self.drone + ": Vehicle armed")
+                        rospy.loginfo("Drone" + str(self.drone) + ": Vehicle armed")
                     last_request = rospy.Time().now()
 
             local_pos_pub.publish(self.desired_point)
             rate.sleep()
 
+        rospy.loginfo("Drone" + str(self.drone) + ": mission finished")
         self.result_queue.put((self.drone, self.liability))
 
     def load_points(self):
