@@ -1,0 +1,2 @@
+string liability
+string status

@@ -27,11 +27,11 @@ catkin_python_setup()
 ################################################
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+    RunLiability.msg
+    FinalizeLiability.msg
+)
 
 ## Generate services in the 'srv' folder
 add_service_files(
@@ -78,14 +78,14 @@ include_directories(
 
 catkin_install_python(
   PROGRAMS
-    scripts/run_fly_service
+    scripts/manager_node
   DESTINATION
     ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 install(
     FILES
-        launch/fly_by_points.launch
+        launch/manager.launch
     DESTINATION
         ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
 )

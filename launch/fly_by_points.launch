@@ -1,4 +1,0 @@
-<launch>
-    <node pkg="drone_control_system" name="drone_manager_node" type="run_fly_service" output="screen"/>
-</launch>
-
