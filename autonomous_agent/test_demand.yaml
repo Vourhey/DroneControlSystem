@@ -1,0 +1,10 @@
+model: 
+  multihash: 'QmaRmbJtyfMDBfkDETTPAxKUUcSqZKXWwFKKoZ318nrPku'
+objective:
+  multihash: 'Qmb3H3tHZ1QutcrLq7WEtQWbEWjA11aPqVmeatMSrmFXvE'
+token: '0x145bfdB3753FC92F0536Bec863F953afE3D393D8'
+cost: 0
+lighthouse: '0x0F4bc552bdae0F3C349a689ee4865B6961A0B7D6'
+validator: '0x0000000000000000000000000000000000000000'
+validatorFee: 0
+deadline: 7717500

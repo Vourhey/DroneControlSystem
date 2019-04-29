@@ -5,6 +5,8 @@ from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State
 from mavros_msgs.srv import CommandBool, CommandBoolRequest, SetMode, SetModeRequest
 
+THRESHOLD = 0.2
+
 
 class TrakingThread(threading.Thread):
     def __init__(self, result_queue, drone, liability, filename):
@@ -109,9 +111,9 @@ class TrakingThread(threading.Thread):
         y2 = pose2.pose.position.y
         z2 = pose2.pose.position.z
 
-        if abs(x1 - x2) < 0.1 and \
-           abs(y1 - y2) < 0.1 and \
-           abs(z1 - z2) < 0.1:
+        if abs(x1 - x2) < THRESHOLD and \
+           abs(y1 - y2) < THRESHOLD and \
+           abs(z1 - z2) < THRESHOLD:
             return True
 
         return False
