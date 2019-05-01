@@ -3,7 +3,7 @@ import threading
 
 from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import State
-from mavros_msgs.srv import CommandBool, CommandBoolRequest, SetMode, SetModeRequest
+from mavros_msgs.srv import CommandTOL, CommandTOLRequest, CommandBool, CommandBoolRequest, SetMode, SetModeRequest
 
 THRESHOLD = 0.2
 
@@ -73,6 +73,10 @@ class TrakingThread(threading.Thread):
             rate.sleep()
 
         rospy.loginfo("Drone" + str(self.drone) + ": mission finished")
+        rospy.loginfo("Landing point is {}".format(self.land_point))
+        rospy.wait_for_service(self.prefix + "/mavros/cmd/land")
+        land = rospy.ServiceProxy(self.prefix + "/mavros/cmd/land", CommandTOL)
+        land(self.land_point)
         self.result_queue.put((self.drone, self.liability))
 
     def load_points(self):
@@ -98,6 +102,11 @@ class TrakingThread(threading.Thread):
     def check_local_position(self, current):
         if self.compare_points(current, self.desired_point):
             try:
+                self.land_point = CommandTOLRequest()
+                self.land_point.yaw = 0
+                self.land_point.latitude = self.desired_point.pose.position.x
+                self.land_point.longitude = self.desired_point.pose.position.y
+                self.land_point.altitude = self.desired_point.pose.position.z
                 self.desired_point = next(self.points_iter)
             except StopIteration:
                 self.finish_mission = True
