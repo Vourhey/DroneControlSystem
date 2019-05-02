@@ -100,7 +100,7 @@ class WorkerNode:
 
             data = RunLiability()
             data.liability = liability.address.address
-            data.filename = '/home/vadim/Projects/wp_test/src/drone_control_system/points'
+            data.filename = task.data
             pub_run.publish(data)
 
             self.liability_proxy.finish(liability.address.address, True)
